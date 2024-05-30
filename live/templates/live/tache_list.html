@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+
+<div class="container ">
+
+    <center>
+        <div>
+            <br> <br> <br>
+            <h2>
+                <a href="{% url 'live:create_campagnes' %}">
+                    <button class="btn btn-primary">Nouvelle campage <strong class="text-warning">LIVE</strong></button>
+                </a>
+
+                <a href="{% url 'live:tache_live' %}">
+                    <button class="btn btn-warning">Statistique</button>
+                </a>
+            </h2>
+
+            <p class="text-warning" style="font-weight: bold;">Campagnes: {{ taches|length }}
+                <span class="text-success" style="padding-left: 5%;"> Creer: {{ actifs }} </span>
+                <span class="text-danger" style="padding-left: 5%;"> A creer: {{ bloque }} </span>
+            </p>
+
+        </div>
+
+    </center>
+
+
+    <div class="pt-2 ">
+
+
+        <div class="col-12">
+            <label for="statusFilter">Filtrer par statut:</label>
+            <select id="statusFilter">
+                <option value="all">Tous</option>
+                <option value="creer">Créer</option>
+                <option value="a_creer">À créer</option>
+            </select>
+
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+                        style="position: relative; height: 700px">
+
+
+                        <table class="table table-striped mb-0" id="myTable">
+                            <thead class="thead" style="background-color: #163044;">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Client</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Compétition</th>
+                                    <th scope="col">Evénement</th>
+                                    <th scope="col">Titre</th>
+                                    <th scope="col">Teams</th>
+                                    <th scope="col">Date de création</th>
+                                    <th scope="col">Statut</th>
+                                    <th scope="col">User</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tache in taches %}
+
+
+                                <tr class="taskRow {% if tache.action == 'creer'  %} bg-light {% else %} bg-danger {% endif %}" data-status="{{ tache.action }}">
+
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ tache.client }}</td>
+                                    <td>{{ tache.type }}</td>
+                                    <td>{{ tache.competition }}</td>
+                                    <td>{{ tache.evenement}}</td>
+                                    <td>{{ tache.titre}}</td>
+                                    <td>{{ tache.teams }}</td>
+                                    <td>{{ tache.date_creation }}</td>
+                                    <td class="td-status" >{{ tache.action }}</td>
+                                    <td>{{ tache.author }}</td>
+
+                                    <td>
+                                        <div class="gap-3">
+                                            <a href="{{ tache.get_absolute_url }}">
+                                                <button class="btn btn-success">Détail</button>
+                                            </a>
+                                            <a href="{{ tache.get_absolute_url_update }}">
+                                                <i class="fa fa-edit"
+                                                    style='font-size:20px; color:green; padding: 5px'></i>
+                                            </a>
+                                            <a href="{% url 'live:tache_delete' tache.pk %}">
+                                                <i class='fas fa-trash-alt'
+                                                    style='font-size:20px; color:red; padding: 5px'></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <script>
+                document.getElementById("statusFilter").addEventListener("change", function () {
+                    var status = this.value;
+                    var rows = document.querySelectorAll(".taskRow");
+                    rows.forEach(function (row) {
+                        var rowStatus = row.getAttribute("data-status");
+                        if (status === "all" || rowStatus === status) {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
+                        }
+                    });
+                });
+
+            </script>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+</div>
+
+
+
+
+{% endblock %}

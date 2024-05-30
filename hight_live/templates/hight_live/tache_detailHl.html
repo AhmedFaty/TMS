@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+
+<br>
+
+<div class="container px-4 px-lg-5">
+
+    <h2  class="display-4 pt-5">Detail</h2>
+
+    <p> Client: {{ taches.client}} </p>
+    <p> Type: {{ taches.type}} </p>
+    <p> Competition: {{ taches.competition}} </p>
+    <p> Evenement: {{ taches.evenement}} </p>
+    <p> Titre: {{ taches.titre}} </p>
+    <p> Teams: {{ taches.teams}} </p>
+    <p> Date de creation: {{ taches.date_creation}} </p>
+    <p> Statut: {{ taches.action}} </p>
+
+
+    {% comment %} <a href="#">
+        <button class="btn btn-warning">Modifier</button>
+    </a> {% endcomment %}
+
+
+    <a href="{% url 'hight_live:list_live' %}">
+        <button class="btn btn-warning">Liste de campagne</button>
+    </a>
+
+</div>
+
+
+
+{% endblock %}

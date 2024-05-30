@@ -1,0 +1,76 @@
+<div class="container  px-4 px-lg-5">
+    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
+
+    <nav id="navigation" class="navbar navbar-expand-lg  fixed-top">
+
+        <div class="container bg-light bg-gradient align-items-stretch">
+
+
+            <div class="logo">
+
+                <a class="navbar-brand" href="{% url 'live:tache_list' %}">
+
+                    GESTION DES CAMPAGNES
+
+                </a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+                <div class="navbar-nav dropdown">
+                    <!-- <a class="nav-item nav-link active" href="{% url 'live:tache_list' %}">LIVE <span
+                            class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="{% url 'hight_live:list_live' %}">HL</a>
+                    <a class="nav-item nav-link" href="{% url 'extra_live:list_extra' %}">EXTRA</a>     -->
+
+
+                    <!-- <li class="nav-item dropdown"> -->
+                        <a class="nav-link dropdown-toggle active " href="#" role="button" data-toggle="dropdown"
+                            aria-expanded="false" style="padding-left: 25%;">
+                            CAMPAGNES
+                        </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'live:tache_list' %}">LIVE</a>
+                        <a class="dropdown-item" href="{% url 'hight_live:list_live' %}">HL</a>
+                        <a class="dropdown-item" href="{% url 'extra_live:list_extra' %}">EXTRA</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'statistic:statistic' %}">STATISTIQUE</a>
+
+                    </div>
+              
+
+                    <!-- </li> -->
+
+
+                </div>
+
+            </div>
+            <div id="newcampagne">
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'accounts:logout' %}">
+                    <button class="btn btn-warning"> logout <strong class="text-primary"> {{ request.user.username }} </strong> </button>
+                    <!-- <button style="background-color: #63b0f7;"> Nouveau campagne </button> -->
+                </a>
+
+
+
+                {% else %}
+                <a href="{% url 'accounts:login' %}">
+                    <button class="btn btn-primary"> Login </button>
+                    <!-- <button style="background-color: #63b0f7;"> Nouveau campagne </button> -->
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+    </nav>
+</div>

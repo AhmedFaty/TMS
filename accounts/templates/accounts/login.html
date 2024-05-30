@@ -1,0 +1,80 @@
+{% extends 'base_login.html' %}
+
+<!-- <h1>Connnexion</h1>
+
+{% for message in messages %}
+
+<p>{{ message }}</p>
+{% endfor %}
+
+<form method="post">
+
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Se connecter">
+
+</form> -->
+
+
+
+{% block contenu %}
+
+<div class="container">
+
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+
+                <h1 class="display-4 fw-bolder">Connnexion</h1>
+                <p class="lead fw-normal text-white-50 mb-0"> Connnexion a votre compte... </p>
+
+            </div>
+        </div>
+    </header>
+</div>
+
+<div class="container">
+    <div class="row">
+        <center>
+            <div class="col-6 ">
+                <br>
+                <br>
+
+                {% if messages %}
+
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+
+                {% endif %}
+
+                <form method="post" action="{% url 'accounts:login' %}">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="username" placeholder="Enter your Username">
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="password" placeholder="Enter your Password">
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-secondary">Login</button>
+                    <br>
+
+                </form>
+                
+                <br>
+                <br>
+
+            </div>
+        </center>
+
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

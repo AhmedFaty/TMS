@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+<br>
+
+<div class="container px-4 px-lg-5">
+    <center>
+
+        <h6 class="display-6 pt-5">Voulez vous supprimer cette campagne ? {{tache.client}}</h6>
+        <form method="post">
+            {% csrf_token %}
+            
+            <button class="btn btn-danger" input type="submit"> Delete </button>
+
+            <!-- <input type="submit" value="Delete" > -->
+        </form>
+
+    </center>
+</div>
+
+
+{% endblock %}

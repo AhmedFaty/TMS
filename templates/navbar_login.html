@@ -1,0 +1,56 @@
+<div class="container  px-4 px-lg-5">
+    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
+
+    <nav id="navigation" class="navbar navbar-expand-lg  fixed-top">
+
+        <div class="container bg-light bg-gradient align-items-stretch">
+
+
+            <div class="logo">
+
+                <a class="navbar-brand" >
+
+                    GESTION DES CAMPAGNES
+
+                </a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+                <div class="navbar-nav ">
+                    <a class="nav-item nav-link active" >LIVE <span
+                            class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" >HL</a>
+                    <a class="nav-item nav-link" >EXTRA</a>                        
+
+
+                </div>
+
+            </div>
+            <div id="newcampagne">
+                
+                {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:logout' %}">
+                        <button class="btn btn-primary"> logout </button>
+                        <!-- <button style="background-color: #63b0f7;"> Nouveau campagne </button> -->
+                    </a>
+
+                {% else %}
+                    <a href="{% url 'accounts:login' %}">
+                        <button class="btn btn-primary"> Login </button>
+                        <!-- <button style="background-color: #63b0f7;"> Nouveau campagne </button> -->
+                    </a>
+                
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+    </nav>
+</div>

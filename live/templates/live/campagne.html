@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+
+<div class="container px-4 px-lg-5">
+
+    <h2 class="display-4 pt-5">Creation de campagnes LIVE</h2>
+    
+    <p class="display-6 text-center" style="color: green;"> {{ message }}</p>
+
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <br>
+        <button type="submit" class="btn btn-success">Creer</button>
+    </form>
+</div>
+
+{% endblock %}

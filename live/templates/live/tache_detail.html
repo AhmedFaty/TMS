@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+
+<br>
+
+<div class="container px-4 px-lg-5">
+
+    <h2  class="display-4 pt-5">Detail</h2>
+
+    <p> Client: {{ taches.client}} </p>
+    <p> Type: {{ taches.type}} </p>
+    <p> Competition: {{ taches.competition}} </p>
+    <p> Evenement: {{ taches.evenement}} </p>
+    <p> Titre: {{ taches.titre}} </p>
+    <p> Date de creation: {{ taches.date_creation}} </p>
+    <p> Statut: {{ taches.action}} </p>
+
+    <a href="{% url 'live:tache_list' %}">
+        <button class="btn btn-warning">Liste de campagne</button>
+    </a>
+
+
+</div>
+
+
+
+{% endblock %}

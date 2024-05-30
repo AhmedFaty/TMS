@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block contenu %}
+
+<div class="container">
+    <br><br><br>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div style="background-color: #163044;" class="card text-white">
+                <div class="card-body">
+                    <div class="mr-5"><strong>HL</strong> : {{ tahe }} </div>
+                </div>
+                <a class="card-footer text-white clearfix small z-1">
+                    <span class="float-left"> <strong>Creer</strong>: {{ actifs }}</span> <br>
+                    <span class="float-left"><strong>A creer</strong>: {{ bloque }}</span>
+                    <span class="float-right">
+                    </span>
+
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div style="background-color: #163044;" class="card text-white">
+                <div class="card-body">
+                    <div class="mr-5"><strong>Année</strong> </div>
+                </div>
+
+                <center> <label for="statusFilter">Filtrer par Année:</label></center>
+                <select id="statusFilter" name="year" id="year" class="form-control">
+                    <option value="all">All</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                    <option value="2030">2030</option>
+                </select>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="row gx-4 gx-lg-5" style="margin-left: 5%;" >
+
+        <!-- <div class="row" style="margin-left: 5%;"> -->
+
+        <div class="col-md-12">
+            <div class="taskRow">
+                <canvas id="myChart1"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Données pour le premier diagramm
+
+        var allMonths = {{ months| safe }};
+        var allCounts = {{ counts| safe }};
+        var selectedYear = 'all';
+
+        const ctx = document.getElementById('myChart1').getContext('2d');
+
+        function updateChart(year) {
+            var months = [];
+            var counts = {};
+
+
+            if (year === 'all') {
+                months = allMonths;
+                counts = allCounts;
+            } else {
+                for (var i = 0; i < allMonths.length; i++) {
+                    if (allMonths[i].endsWith(year)) {
+                        months.push(allMonths[i]);
+                        counts[allMonths[i]] = allCounts[allMonths[i]];
+
+                    }
+                }
+            }
+
+            tacheChart.data.labels = months;
+            tacheChart.data.datasets[0].data = counts;
+            tacheChart.update();
+        }
+
+        var tacheChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: allMonths,
+                datasets: [{
+                    label: 'Nombre de tâches créées par mois',
+                    data: allCounts,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(255, 159, 64, 0.5)',
+                        'rgba(255, 205, 86, 0.5)',
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(153, 102, 255, 0.5)',
+                        'rgba(201, 203, 207, 0.5)',
+                        'rgba(153, 99, 207, 0.5)',
+                        'rgba(201, 159, 203, 0.5)',
+                        'rgba(153, 205, 99, 0.5)',
+                        'rgba(75, 192, 153, 0.5)',
+                        'rgba(54, 99, 235, 0.5)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)',
+                        'rgb(201, 99, 64)',
+                        'rgb(59, 159, 86)',
+                        'rgb(153, 64, 86)',
+                        'rgb(75, 153, 192)',
+                        'rgb(255, 162, 235)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+
+
+
+
+
+        document.getElementById("statusFilter").addEventListener("change", function () {
+            selectedYear = this.value;
+            updateChart(selectedYear);
+        });
+
+
+
+
+    </script>
+
+
+
+</div>
+
+{% endblock %}

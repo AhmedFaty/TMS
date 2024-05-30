@@ -1,0 +1,462 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block contenu %}
+
+<br><br><br>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div style="background-color: #163044;" class="card text-white">
+                <div class="card-body">
+                    <div class="mr-5"><strong>LIVE</strong> : {{ tahe_live }} </div>
+                </div>
+                <a class="card-footer text-white clearfix small z-1">
+                    <span class="float-left"> <strong>Creer</strong>: {{ actifs }}</span> <br>
+                    <span class="float-left"><strong>A creer</strong>: {{ bloque }}</span>
+                    <span class="float-right"></span>
+
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div style="background-color: #163044;" class="card text-white">
+                <div class="card-body">
+                    <div class="mr-5"><strong>HL</strong> : {{ tahe_hl }} </div>
+                </div>
+                <a class="card-footer text-white clearfix small z-1">
+                    <span class="float-left"> <strong>Creer</strong>: {{ actifs_hl }}</span> <br>
+                    <span class="float-left"><strong>A creer</strong>: {{ bloque_hl }}</span>
+                    <span class="float-right"></span>
+
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div style="background-color: #163044;" class="card text-white">
+                <div class="card-body">
+                    <div class="mr-5"><strong>EXTRA</strong> : {{ tahe_extra }}</div>
+                </div>
+                <a class="card-footer text-white clearfix small z-1">
+                    <span class="float-left"> <strong>Creer</strong>: {{ actifs_extra }}</span> <br>
+                    <span class="float-left"><strong>A creer</strong>: {{ bloque_extra }}</span>
+                    <span class="float-right"></span>
+
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-12">
+        <label for="statusFilter">Filtrer par Année:</label>
+        <select id="statusFilter" name="year" id="year" class="form-control">
+            <option value="all">All</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+        </select>
+    </div>
+
+
+
+
+
+    <div class="row gx-4 gx-lg-5">
+
+        <div class="col-md-6">
+            <div class="taskRow">
+                <canvas id="myChart1"></canvas>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="taskRow">
+                <canvas id="myChart2"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="taskRow">
+                <canvas id="myChart3"></canvas>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="taskRow">
+                <canvas id="myChart4"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+
+    // Données pour le premier diagramm
+
+    var allMonths = {{ months| safe }};
+    var allCounts = {{ counts| safe }};
+    var selectedYear = 'all';
+
+    const ctx = document.getElementById('myChart1').getContext('2d');
+
+    function updateChart(year) {
+        var months = [];
+        var counts = {};
+
+
+        if (year === 'all') {
+            months = allMonths;
+            counts = allCounts;
+        } else {
+            for (var i = 0; i < allMonths.length; i++) {
+                if (allMonths[i].endsWith(year)) {
+                    months.push(allMonths[i]);
+                    counts[allMonths[i]] = allCounts[allMonths[i]];
+
+                }
+            }
+        }
+
+        tacheChart.data.labels = months;
+        tacheChart.data.datasets[0].data = counts;
+        tacheChart.update();
+    }
+
+    var tacheChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: allMonths,
+            datasets: [{
+                label: 'Nombre de LIVE créées par mois',
+                data: allCounts,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(255, 159, 64, 0.5)',
+                    'rgba(255, 205, 86, 0.5)',
+                    'rgba(75, 192, 192, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(153, 102, 255, 0.5)',
+                    'rgba(201, 203, 207, 0.5)',
+                    'rgba(153, 99, 207, 0.5)',
+                    'rgba(201, 159, 203, 0.5)',
+                    'rgba(153, 205, 99, 0.5)',
+                    'rgba(75, 192, 153, 0.5)',
+                    'rgba(54, 99, 235, 0.5)'
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)',
+                    'rgb(201, 99, 64)',
+                    'rgb(59, 159, 86)',
+                    'rgb(153, 64, 86)',
+                    'rgb(75, 153, 192)',
+                    'rgb(255, 162, 235)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+
+
+    // Données pour le Deuxieme diagramm
+
+    var allMonths_hl = {{ months_hl| safe }};
+    var allCounts_hl = {{ counts_hl| safe }};
+    var selectedYear = 'all';
+
+    const ctx2 = document.getElementById('myChart2').getContext('2d');
+
+    function updateChart2(year) {
+        var months_hl = [];
+        var counts_hl = {};
+
+
+        if (year === 'all') {
+            months_hl = allMonths_hl;
+            counts_hl = allCounts_hl;
+        } else {
+            for (var i = 0; i < allMonths_hl.length; i++) {
+                if (allMonths_hl[i].endsWith(year)) {
+                    months_hl.push(allMonths_hl[i]);
+                    counts_hl[allMonths_hl[i]] = allCounts_hl[allMonths_hl[i]];
+
+                }
+            }
+        }
+
+
+
+        tacheChart2.data.labels = months_hl;
+        tacheChart2.data.datasets[0].data = counts_hl;
+        tacheChart2.update();
+    }
+
+    var tacheChart2 = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: allMonths_hl,
+            datasets: [{
+                label: 'Nombre de H_LIVE créées par mois',
+                data: allCounts_hl,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(255, 159, 64, 0.5)',
+                    'rgba(255, 205, 86, 0.5)',
+                    'rgba(75, 192, 192, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(153, 102, 255, 0.5)',
+                    'rgba(201, 203, 207, 0.5)',
+                    'rgba(153, 99, 207, 0.5)',
+                    'rgba(201, 159, 203, 0.5)',
+                    'rgba(153, 205, 99, 0.5)',
+                    'rgba(75, 192, 153, 0.5)',
+                    'rgba(54, 99, 235, 0.5)'
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)',
+                    'rgb(201, 99, 64)',
+                    'rgb(59, 159, 86)',
+                    'rgb(153, 64, 86)',
+                    'rgb(75, 153, 192)',
+                    'rgb(255, 162, 235)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+
+
+
+    // Données pour le Troisieme diagramm
+
+    var allMonths_extra = {{ months_extra| safe }};
+    var allCounts_extra = {{ counts_extra| safe }};
+    var selectedYear = 'all';
+
+    const ctx3 = document.getElementById('myChart3').getContext('2d');
+
+    function updateChart3(year) {
+        var months_extra = [];
+        var counts_extra = {};
+
+
+        if (year === 'all') {
+            months_extra = allMonths_extra;
+            counts_extra = allCounts_extra;
+        } else {
+            for (var i = 0; i < allMonths_extra.length; i++) {
+                if (allMonths_extra[i].endsWith(year)) {
+                    months_extra.push(allMonths_extra[i]);
+                    counts_extra[allMonths_extra[i]] = allCounts_extra[allMonths_extra[i]];
+
+                }
+            }
+        }
+
+        tacheChart3.data.labels = months_extra;
+        tacheChart3.data.datasets[0].data = counts_extra;
+        tacheChart3.update();
+    }
+
+    var tacheChart3 = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+            labels: allMonths,
+            datasets: [{
+                label: 'Nombre de EXTRA_LIVE créées par mois',
+                data: allCounts_extra,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(255, 159, 64, 0.5)',
+                    'rgba(255, 205, 86, 0.5)',
+                    'rgba(75, 192, 192, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(153, 102, 255, 0.5)',
+                    'rgba(201, 203, 207, 0.5)',
+                    'rgba(153, 99, 207, 0.5)',
+                    'rgba(201, 159, 203, 0.5)',
+                    'rgba(153, 205, 99, 0.5)',
+                    'rgba(75, 192, 153, 0.5)',
+                    'rgba(54, 99, 235, 0.5)'
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)',
+                    'rgb(201, 99, 64)',
+                    'rgb(59, 159, 86)',
+                    'rgb(153, 64, 86)',
+                    'rgb(75, 153, 192)',
+                    'rgb(255, 162, 235)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+
+
+
+    // This chart would show a line only for the third dataset
+    const ctx4 = document.getElementById('myChart4').getContext('2d');
+
+
+    function updateChart4(year) {
+        var months = [];
+        var counts = [];
+
+        if (year === 'all') {
+            months = allMonths;
+            counts = allCounts;
+        } else {
+            for (var i = 0; i < allMonths_extra.length; i++) {
+                if (allMonths[i].endsWith(year)) {
+                    months.push(allMonths[i]);
+                    counts.push(allCounts[i]);
+                }
+            }
+        }
+
+        tacheChart4.data.labels = months;
+        tacheChart4.data.datasets[0].data = counts;
+        tacheChart4.update();
+    }
+
+
+    var allMonths = {{ months| safe }};
+    var allCounts = {{ counts| safe }};
+
+    var allMonths_hl = {{ months_hl| safe }};
+    var allCounts_hl = {{ counts_hl| safe }};
+
+    var allMonths_extra = {{ months_extra| safe }};
+    var allCounts_extra = {{ counts_extra| safe }};
+
+
+
+    const tacheChart4 = new Chart(ctx4, {
+        type: 'line',
+        data: {
+     
+            datasets: [{
+                label: 'LIVE',
+                data: allCounts,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Couleur de fond
+                borderColor: 'rgba(255, 99, 132, 1)', // Couleur de la bordure
+                borderWidth: 1 // Largeur de la bordure
+            }, {
+                label: 'H_LIVE',
+                data: allCounts_hl,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }, {
+                label: 'EXTRA_LIVE',
+                data: allCounts_extra,
+                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                borderColor: 'rgba(255, 206, 86, 1)',
+                borderWidth: 1,
+                showLine: true // overrides the `line` dataset default
+            }, {
+                type: 'scatter',
+                label: 'Nom du quatrième dataset',
+                data: allCounts, // Ajoutez les données appropriées pour le graphique de type scatter
+                // Vous pouvez également spécifier backgroundColor et borderColor pour le graphique de type scatter si nécessaire
+            }]
+        }
+    });
+
+
+
+
+
+
+
+    document.getElementById("statusFilter").addEventListener("change", function () {
+        selectedYear = this.value;
+        updateChart(selectedYear);
+    });
+
+
+    document.getElementById("statusFilter").addEventListener("change", function () {
+        selectedYear = this.value;
+        updateChart2(selectedYear);
+    });
+
+
+    document.getElementById("statusFilter").addEventListener("change", function () {
+        selectedYear = this.value;
+        updateChart3(selectedYear);
+    });
+
+
+
+
+    // document.getElementById("statusFilter").addEventListener("change", function () {
+    //     selectedYear = this.value;
+    //     updateChart4(selectedYear);
+    // });
+</script>
+
+
+
+{% endblock %}
